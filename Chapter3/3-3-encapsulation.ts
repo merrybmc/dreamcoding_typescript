@@ -3,6 +3,7 @@
    * encapsulation
    * public 전역
    * private 스코프 내에서만
+   * protected 클래스를 상속한 자식 클래스에게만
    */
   type CoffeeCup = {
     shots: number;
