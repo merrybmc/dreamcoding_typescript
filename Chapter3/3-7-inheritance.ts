@@ -21,7 +21,7 @@
     private static BEANS_GRAMM_PER_SHOT: number = 7; // class level
     private coffeeBeans: number = 15; // instance (object) level
 
-    constructor(coffeeBeans: number) {
+    public constructor(coffeeBeans: number) {
       this.coffeeBeans = coffeeBeans;
     }
 
@@ -35,6 +35,10 @@
       } else {
         this.coffeeBeans += beans;
       }
+    }
+
+    clean(): void {
+      console.log('cleaning the machine...');
     }
 
     grindBeans(shots: number): void {
@@ -75,14 +79,25 @@
     }
   }
 
-  const maker = new CoffeeMachine(32);
-  let coffee = maker.makeCoffee(2);
-  console.log(coffee);
-  console.log(maker.coffeeBeans);
-  const maker2 = CoffeeMachine.makeMachine(3);
-  //   maker.coffeeBeans += 3;
-  //   private로 설정하여 임의 조작 불가능
-  maker.fillCoffeeBeans(3);
+  class CaffeLatteMachine extends CoffeeMachine {
+    constructor(beans: number, private readonly serialNumber: string) {
+      super(beans);
+    }
+    private steamMilk(): void {
+      console.log('Steaming milk...');
+    }
+    makeCoffee(shots: number): CoffeeCup {
+      const coffee = super.makeCoffee(shots);
+      this.steamMilk();
+      return {
+        ...coffee,
+        hasMilk: true,
+      };
+    }
+  }
 
-  const maker3: CoffeeMaker = CoffeeMachine.makeMachine(32);
+  const machine = new CoffeeMachine(23);
+  const latteMachine = new CaffeLatteMachine(23, 'ssss');
+  const coffee = latteMachine.makeCoffee(1);
+  console.log(coffee);
 }
